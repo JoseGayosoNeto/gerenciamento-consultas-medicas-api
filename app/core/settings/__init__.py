@@ -15,6 +15,7 @@ if env not in ENVS:
     )
 
 from .environments.base import *
+from .logging import *
 
 match env:
     case 'DEV':
