@@ -16,21 +16,10 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies: [ types-requests, types-PyYAML, types-toml ]
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - flake8-bugbear
-          - flake8-builtins
-          - flake8-coding
-          - flake8-isort
-          - flake8-polyfill
-          - flake8-quotes
   - repo: local
     hooks:
       - id: flake8-local
-        name: flake8 local linter
+        name: flake8
         entry: flake8
         language: system
         types: [python]
