@@ -1,0 +1,20 @@
+[flake8]
+ignore = A005,C101,D403,F403,F405,W503,W504
+exclude =
+    **/migrations/*,
+    .git,
+    __pycache__,
+    venv
+filename = *.py
+accept-encodings = utf-8
+inline-quotes = single
+max-complexity = 12
+max-linenumber = 500
+max-line-length = 100
+multiline-quotes = double
+per-file-ignores =
+    app/core/settings/__init__.py:E402
+    app/core/settings/environments/base.py:F821
+    app/core/settings/environments/dev.py:F821
+    app/core/settings/environments/prod.py:F821
+    app/core/settings/environments/staging.py:F821
