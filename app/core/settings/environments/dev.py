@@ -1,5 +1,6 @@
 import os
 
+from ..logging import LOGGING
 from .base import BASE_DIR
 
 if not os.getenv('DEV_SECRET_KEY'):
@@ -19,3 +20,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+LOGGING['handlers']['console']['level'] = os.getenv('DEV_LOG_LEVEL')
+LOGGING['root']['level'] = os.getenv('DEV_LOG_LEVEL')
+for logger_name in LOGGING['loggers']:
+    LOGGING['loggers'][logger_name]['level'] = os.getenv('DEV_LOG_LEVEL')
+LOGGING['root']['handlers'] = [
+    'console',
+]
