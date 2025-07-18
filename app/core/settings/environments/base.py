@@ -1,14 +1,11 @@
 from pathlib import Path
-
+from typing import List
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
-SECRET_KEY = NotImplemented
-
 DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS: List[str] = []
 
 # Application definition
 
@@ -68,7 +65,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -79,7 +75,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
