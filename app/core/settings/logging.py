@@ -8,7 +8,8 @@ LOGGING: Dict = {
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format': '%(asctime)s %(levelname)s %(name)s %(message)s',
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(log_color)s%(asctime)s %(levelname)s %(name)s %(bold_white)s%(message)s',
             'datefmt': '%Y-%m-%d %H:%M:%S',
         },
     },
