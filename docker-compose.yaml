@@ -1,0 +1,148 @@
+version: '3.9'
+
+services:
+
+  
+  ## STAGING SERVICES
+  staging_db:
+    image: postgres:14-alpine
+    container_name: staging_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${STAGING_POSTGRES_DB}
+      POSTGRES_USER: ${STAGING_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${STAGING_POSTGRES_PASSWORD}
+      TZ: America/Sao_Paulo
+    volumes:
+      - staging_postgresql_data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    networks:
+      - staging_net
+  
+  staging_api:
+    build: .
+    container_name: staging_api
+    restart: unless-stopped
+    depends_on:
+      - staging_db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/monitor/health/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    env_file:
+      - .env
+    environment:
+      ENV: STAGING
+    volumes:
+      - staging_api_logs_volume:/app/logs
+      - staging_static_volume:/opt/project/staticfiles
+      - staging_media_volume:/opt/project/mediafiles
+    ports:
+      - '8001:8000'
+    networks:
+      - staging_net
+  
+  staging_nginx:
+    image: nginx:stable-alpine
+    container_name: nginx_staging_server
+    restart: unless-stopped
+    ports:
+      - '81:80'
+    volumes:
+      - ./nginx/nginx.staging.conf:/etc/nginx/nginx.conf:ro
+      - staging_static_volume:/opt/project/staticfiles
+      - staging_media_volume:/opt/project/mediafiles
+      - staging_nginx_logs_volume:/var/log/nginx
+    depends_on:
+      - staging_api
+    networks:
+      - staging_net
+
+  ## PRODUCTION SERVICES
+  prod_db:
+    image: postgres:15-alpine
+    container_name: prod_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${PROD_POSTGRES_DB}
+      POSTGRES_USER: ${PROD_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${PROD_POSTGRES_PASSWORD}
+      TZ: America/Sao_Paulo
+    volumes:
+      - prod_postgresql_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - prod_net
+  
+  prod_api:
+    build: .
+    container_name: prod_api
+    restart: unless-stopped
+    depends_on:
+      - prod_db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/monitor/health/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    env_file:
+      - .env
+    environment:
+      ENV: PROD
+    volumes:
+      - prod_api_logs_volume:/opt/project/logs
+      - prod_static_volume:/opt/project/staticfiles
+      - prod_media_volume:/opt/project/mediafiles
+    ports:
+      - '8000:8000'
+    networks:
+      - prod_net
+
+  prod_nginx:
+    image: nginx:stable-alpine
+    container_name: nginx_prod_server
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - prod_static_volume:/opt/project/staticfiles
+      - prod_media_volume:/opt/project/mediafiles
+      - prod_nginx_logs_volume:/var/log/nginx
+    depends_on:
+      - prod_api
+    networks:
+      - prod_net
+
+volumes:
+  staging_postgresql_data:
+    driver: local
+  staging_api_logs_volume:
+    driver: local
+  staging_static_volume:
+    driver: local
+  staging_media_volume:
+    driver: local
+  staging_nginx_logs_volume:
+    driver: local
+  prod_postgresql_data:
+    driver: local
+  prod_api_logs_volume:
+    driver: local
+  prod_static_volume:
+    driver: local
+  prod_media_volume:
+    driver: local
+  prod_nginx_logs_volume:
+    driver: local
+
+networks:
+  staging_net:
+    driver: bridge
+  prod_net:
+    driver: bridge

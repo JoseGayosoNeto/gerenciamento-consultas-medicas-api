@@ -1,14 +1,22 @@
 import os
 from typing import Dict
 
+from app.core.settings.environments.base import BASE_DIR
+
 LOG_LEVEL = os.getenv('BASE_LOG_LEVEL', 'DEBUG')
+LOG_FILE_PATH = os.getenv('LOG_FILE_PATH')
+if not LOG_FILE_PATH:
+    raise ValueError("Variável de ambiente LOG_FILE_PATH precisa ser definida.")
+
+os.makedirs(os.path.dirname(os.path.join(BASE_DIR, LOG_FILE_PATH)), exist_ok=True)
 
 LOGGING: Dict = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format': '%(asctime)s %(levelname)s %(name)s %(message)s',
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(log_color)s%(asctime)s %(levelname)s %(name)s %(bold_white)s%(message)s',
             'datefmt': '%Y-%m-%d %H:%M:%S',
         },
     },
@@ -22,7 +30,7 @@ LOGGING: Dict = {
         'file': {
             'level': 'WARNING',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'app/logs/app.log',
+            'filename': os.path.join(BASE_DIR, LOG_FILE_PATH),
             'maxBytes': 1024 * 1024 * 5,
             'backupCount': 7,
             'formatter': 'standard',
