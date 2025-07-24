@@ -1,12 +1,14 @@
+# mypy: ignore-errors
+
 import os
 
 from ..logging import LOGGING
 from .base import BASE_DIR
 
-if not os.getenv('DEV_SECRET_KEY'):
-    SECRET_KEY = 'django-insecure-c^4axmu@4n0ca*$a8fx3#a23$@8-!kg^o-l*@i7+vpbo%$eg9k'
-else:
-    os.getenv('DEV_SECRET_KEY')
+SECRET_KEY = os.getenv(
+    'DEV_SECRET_KEY',
+    'django-insecure-c^4axmu@4n0ca*$a8fx3#a23$@8-!kg^o-l*@i7+vpbo%$eg9k',
+)
 
 DEBUG = True
 

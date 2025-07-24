@@ -1,10 +1,25 @@
+# mypy: ignore-errors
+
 import os
 
 from ..logging import LOGGING
 
 DEBUG = False
 
-# ALLOWED_HOSTS: = ['*']
+SECRET_KEY = os.getenv('PROD_SECRET_KEY')
+
+ALLOWED_HOSTS = os.getenv('PROD_ALLOWED_HOSTS').split(',')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('PROD_POSTGRES_DB'),
+        'USER': os.getenv('PROD_POSTGRES_USER'),
+        'PASSWORD': os.getenv('PROD_POSTGRES_PASSWORD'),
+        'HOST': os.getenv('PROD_POSTGRES_HOST'),
+        'PORT': os.getenv('PROD_POSTGRES_PORT')
+    }
+}
 
 IN_DOCKER = True
 

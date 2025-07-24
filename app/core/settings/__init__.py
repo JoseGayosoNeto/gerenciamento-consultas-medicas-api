@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 import os
 
 from django.core.exceptions import ImproperlyConfigured
