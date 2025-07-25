@@ -28,6 +28,4 @@ match env:
         from .environments.staging import *
 
 if IN_DOCKER:  # type: ignore
-    assert MIDDLEWARE[:1] == [  # type: ignore
-        'django.middleware.security.SecurityMiddleware'
-    ]
+    assert MIDDLEWARE[1] == 'django.middleware.security.SecurityMiddleware'  # type: ignore
