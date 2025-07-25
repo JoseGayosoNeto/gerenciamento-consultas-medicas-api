@@ -1,14 +1,11 @@
 from pathlib import Path
-
+from typing import List
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
-SECRET_KEY = NotImplemented
-
 DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS: List[str] = []
 
 # Application definition
 
@@ -19,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app.health',
 ]
 
 MIDDLEWARE = [
@@ -68,23 +66,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+STATICFILES_DIRS: List[Path] = []
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
