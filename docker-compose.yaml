@@ -27,7 +27,7 @@ services:
     depends_on:
       - staging_db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/monitor/health/"]
+      test: ["CMD", "curl", "-f", "http://staging_api:8000/monitor/health/"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -85,7 +85,7 @@ services:
     depends_on:
       - prod_db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/monitor/health/"]
+      test: ["CMD", "curl", "-f", "http://prod_api:8000/monitor/health/"]
       interval: 10s
       timeout: 5s
       retries: 5
