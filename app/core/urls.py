@@ -8,6 +8,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('monitor/', include('app.health.urls')),
+    path('api/v1/', include('app.authentication.urls')),
 ]
 
 if os.getenv('ENV') == 'DEV':
