@@ -3,6 +3,7 @@
 import os
 
 from ..logging import LOGGING
+from .base import SIMPLE_JWT
 
 DEBUG = False
 
@@ -22,6 +23,13 @@ DATABASES = {
 }
 
 IN_DOCKER = True
+
+# Configurações de autenticação via Token JWT
+SIMPLE_JWT.update({
+    'SIGNING_KEY ': SECRET_KEY,
+    'ALGORITHM': 'HS256',
+    'UPDATE_LAST_LOGIN': True,
+})
 
 # Configurações de segurança
 

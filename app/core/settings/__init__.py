@@ -12,8 +12,8 @@ ENVS = ['DEV', 'PROD', 'STAGING']
 env = os.getenv('ENV')
 if env not in ENVS:
     raise ImproperlyConfigured(
-        f'O valor atual de ENV é {env}, mas ele deve ser um dos \
-                                seguintes valores permitidos: {ENVS}'
+        f'O valor atual de ENV é {env}, mas ele deve \
+        ser um dos seguintes valores permitidos: {ENVS}'
     )
 
 from .environments.base import *
